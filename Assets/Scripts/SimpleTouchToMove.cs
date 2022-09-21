@@ -14,6 +14,8 @@ public class SimpleTouchToMove : MonoBehaviour
     public float gravity = 10f;
     public float jumpForce = 3f;
     public float stopForce = 2f;
+    public Animator animator;
+
 
     // Update is called once per frame
     void Update()
@@ -48,7 +50,9 @@ public class SimpleTouchToMove : MonoBehaviour
             canMove = false;
             moveDirection = Vector3.Lerp(moveDirection , Vector3.zero , stopForce * Time.deltaTime);
         }
-        if (Input.GetMouseButtonUp(0))
+
+        animator.SetBool("canWalk", canMove);
+        if (Input.GetMouseButtonUp(0) && characterController.isGrounded)
         {
             moveDirection.y += jumpForce;
         }
