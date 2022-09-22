@@ -15,6 +15,7 @@ public class SimpleTouchToMove : MonoBehaviour
     public float jumpForce = 3f;
     public float stopForce = 2f;
     public Animator animator;
+    public GameObject jumpEffect;
 
 
     // Update is called once per frame
@@ -28,10 +29,10 @@ public class SimpleTouchToMove : MonoBehaviour
             {
                 initPos = touch.position;
             }
-            if (touch.phase == TouchPhase.Moved)
+            /*if (touch.phase == TouchPhase.Moved)
             {
                 direction = touch.deltaPosition;
-            }
+            }*/
             if (characterController.isGrounded)
             {
                 moveDirection = new Vector3(
@@ -42,7 +43,7 @@ public class SimpleTouchToMove : MonoBehaviour
                 Quaternion targetRotation = moveDirection != Vector3.zero ? Quaternion.LookRotation(moveDirection) : transform.rotation;
                 transform.rotation = targetRotation;
 
-                moveDirection = moveDirection * speed;
+                moveDirection = moveDirection.normalized * speed;
             }
         }
         else
@@ -54,6 +55,7 @@ public class SimpleTouchToMove : MonoBehaviour
         animator.SetBool("canWalk", canMove);
         if (Input.GetMouseButtonUp(0) && characterController.isGrounded)
         {
+            Instantiate(jumpEffect, transform.position, Quaternion.identity);
             moveDirection.y += jumpForce;
         }
 
