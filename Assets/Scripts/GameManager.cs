@@ -5,8 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public int level = 1;
+    public bool gameStarted = false;
 
     public GameObject[] rooms;
+    public GameObject[] UICanvases;
 
     private void Awake()
     {
@@ -16,6 +18,15 @@ public class GameManager : MonoBehaviour
             {
                 rooms[i-1].SetActive(true);
             }
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0) && !gameStarted)
+        {
+            gameStarted = true;
+            UICanvases[0].SetActive(false);
         }
     }
 }
