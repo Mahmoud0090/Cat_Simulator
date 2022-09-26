@@ -52,4 +52,19 @@ public class GameManager : MonoBehaviour
         timerVal = 30;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void WatchExtraTimeVideo()
+    {
+        // display video
+        GetExtraTime();
+    }
+
+    public void GetExtraTime()
+    {
+        timerVal = 5;
+        timerText.text = timerVal.ToString();
+        InvokeRepeating("SetTimer", 1, 1);
+        gameEnded = false;
+        screenEnd.SetActive(false);
+    }
 }
