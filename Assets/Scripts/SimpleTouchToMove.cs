@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SimpleTouchToMove : MonoBehaviour
 {
+    public GameManager gm;
     Touch touch;
     Vector2 initPos;
     Vector2 direction;
@@ -17,49 +18,51 @@ public class SimpleTouchToMove : MonoBehaviour
     public Animator animator;
     public GameObject jumpEffect;
 
-
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (!gm.gameEnded && gm.gameStarted)
         {
-            canMove = true;
-            touch = Input.GetTouch(0);
-            if(touch.phase == TouchPhase.Began)
+            if (Input.touchCount > 0)
             {
-                initPos = touch.position;
+                canMove = true;
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    initPos = touch.position;
+                }
+                /*if (touch.phase == TouchPhase.Moved)
+                {
+                    direction = touch.deltaPosition;
+                }*/
+                if (characterController.isGrounded)
+                {
+                    moveDirection = new Vector3(
+                        touch.position.x - initPos.x,
+                        0,
+                        touch.position.y - initPos.y
+                    );
+                    Quaternion targetRotation = moveDirection != Vector3.zero ? Quaternion.LookRotation(moveDirection) : transform.rotation;
+                    transform.rotation = targetRotation;
+
+                    moveDirection = moveDirection.normalized * speed;
+                }
             }
-            /*if (touch.phase == TouchPhase.Moved)
+            else
             {
-                direction = touch.deltaPosition;
-            }*/
-            if (characterController.isGrounded)
-            {
-                moveDirection = new Vector3(
-                    touch.position.x - initPos.x,
-                    0,
-                    touch.position.y - initPos.y
-                );
-                Quaternion targetRotation = moveDirection != Vector3.zero ? Quaternion.LookRotation(moveDirection) : transform.rotation;
-                transform.rotation = targetRotation;
-
-                moveDirection = moveDirection.normalized * speed;
+                canMove = false;
+                moveDirection = Vector3.Lerp(moveDirection, Vector3.zero, stopForce * Time.deltaTime);
             }
-        }
-        else
-        {
-            canMove = false;
-            moveDirection = Vector3.Lerp(moveDirection , Vector3.zero , stopForce * Time.deltaTime);
-        }
+            animator.SetBool("canWalk", canMove);
+            if (Input.GetMouseButtonUp(0) && characterController.isGrounded)
+            {
+                Instantiate(jumpEffect, transform.position, Quaternion.identity);
+                moveDirection.y += jumpForce;
+            }
+            moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
 
-        animator.SetBool("canWalk", canMove);
-        if (Input.GetMouseButtonUp(0) && characterController.isGrounded)
-        {
-            Instantiate(jumpEffect, transform.position, Quaternion.identity);
-            moveDirection.y += jumpForce;
+            characterController.Move(moveDirection * Time.deltaTime);
         }
-
-        moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
-        characterController.Move(moveDirection * Time.deltaTime);
+       
     }
 }
