@@ -5,11 +5,13 @@ using UnityEngine;
 public class SkinSelector : MonoBehaviour
 {
     public GameObject shop;
+    public CatSkin catSkin;
 
     public void SelectSkin(int skinId)
     {
         print("the selected skin Id is : " + skinId);
-        //todo
+        PlayerPrefs.SetInt("SelectedSkin", skinId);
+        catSkin.SetSkin(skinId);
         shop.SetActive(false);
     }
 }
