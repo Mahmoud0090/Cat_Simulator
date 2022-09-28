@@ -27,12 +27,14 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && !gameStarted)
-        {
-            gameStarted = true;
-            UICanvases[0].SetActive(false);
-            InvokeRepeating("SetTimer", 1, 1);
-        }
+        
+    }
+
+    public void StartGame()
+    {
+        gameStarted = true;
+        UICanvases[0].SetActive(false);
+        InvokeRepeating("SetTimer", 1, 1);
     }
 
     public void SetTimer()
