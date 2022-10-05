@@ -13,7 +13,10 @@ public class GameManager : MonoBehaviour
     public GameObject[] UICanvases;
     public GameObject screenEnd;
     public int timerVal = 30;
-    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI textTimer;
+    public TextMeshProUGUI textScore;
+    public TextMeshProUGUI textScoreFinal;
+    public TextMeshProUGUI bestScore;
 
     private void Awake()
     {
@@ -24,12 +27,12 @@ public class GameManager : MonoBehaviour
                 rooms[i-1].SetActive(true);
             }
         }
+        bestScore.text = "Best: " + PlayerPrefs.GetInt("maxScore", 0);
     }
     private void Update()
     {
         
     }
-
     public void StartGame()
     {
         gameStarted = true;
@@ -40,17 +43,26 @@ public class GameManager : MonoBehaviour
     public void SetTimer()
     {
         timerVal--;
+        textTimer.text = timerVal.ToString();
         if (timerVal == 0)
         {
             gameEnded = true;
             CancelInvoke();
             screenEnd.SetActive(true);
-        }
-        timerText.text = timerVal.ToString();
+            textScoreFinal.text = "Score: " + textScore.text;
+        } 
     }
 
     public void RestartGame()
     {
+        int actualScore = int.Parse(textScore.text);
+        int maxScore = PlayerPrefs.GetInt("maxScore",0);
+        if (actualScore > maxScore)
+        {
+            PlayerPrefs.SetInt("maxScore",actualScore);
+        }
+
+
         timerVal = 30;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -60,11 +72,10 @@ public class GameManager : MonoBehaviour
         // display video
         GetExtraTime();
     }
-
     public void GetExtraTime()
     {
         timerVal = 5;
-        timerText.text = timerVal.ToString();
+        textTimer.text = timerVal.ToString();
         InvokeRepeating("SetTimer", 1, 1);
         gameEnded = false;
         screenEnd.SetActive(false);
