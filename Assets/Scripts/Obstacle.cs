@@ -55,7 +55,6 @@ public class Obstacle : MonoBehaviour
             text.text = newScore.ToString();
             Destroy(gameObject);
         }
-
     }
 
     public void ReloadScene()

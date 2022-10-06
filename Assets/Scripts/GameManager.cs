@@ -61,8 +61,6 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("maxScore",actualScore);
         }
-
-
         timerVal = 30;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
