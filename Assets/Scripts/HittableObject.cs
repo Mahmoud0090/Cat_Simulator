@@ -10,6 +10,5 @@ public class HittableObject : MonoBehaviour
     private void Awake()
     {
         coins = PlayerPrefs.GetInt("coins", 1);
-
     }
 }
