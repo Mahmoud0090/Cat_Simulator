@@ -18,7 +18,11 @@ public class SimpleTouchToMove : MonoBehaviour
     public Animator animator;
     public GameObject jumpEffect;
 
-    // Update is called once per frame
+    private void Awake()
+    {
+        float bonusSpeed = 0.1f * PlayerPrefs.GetInt("speedLevel", 1);
+        speed += bonusSpeed;
+    }
     void Update()
     {
         if (!gm.gameEnded && gm.gameStarted)

@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
     }
     public void GetExtraTime()
     {
-        timerVal = 5;
+        timerVal = 5 + PlayerPrefs.GetInt("timeLevel" , 1);
         textTimer.text = timerVal.ToString();
         InvokeRepeating("SetTimer", 1, 1);
         gameEnded = false;
