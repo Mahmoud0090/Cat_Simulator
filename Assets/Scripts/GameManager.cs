@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI textScore;
     public TextMeshProUGUI textScoreFinal;
     public TextMeshProUGUI bestScore;
+    public AIPlayer[] aIPlayers;
 
     private void Awake()
     {
@@ -38,6 +39,10 @@ public class GameManager : MonoBehaviour
         gameStarted = true;
         UICanvases[0].SetActive(false);
         InvokeRepeating("SetTimer", 1, 1);
+        foreach(AIPlayer ai in aIPlayers)
+        {
+            ai.StartGame();
+        }
     }
 
     public void SetTimer()
