@@ -10,18 +10,23 @@ public class CatHitter : MonoBehaviour
     public int explosionForce = 150;
     public int explosionRadius = 25;
     public GameObject[] hitParticles;
+    public bool isAI = false;
+    public GameManager gm;
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(hit.gameObject.tag == "Hittable")
+        if (!isAI)
         {
-            print("Ok");
-            hit.gameObject.tag = "Hitted";
-            Rigidbody obj_rb = hit.gameObject.GetComponent<Rigidbody>();
-            HittableObject ho = hit.gameObject.GetComponent<HittableObject>();
-            HitEffect(hit, obj_rb);
-            Score3DEffect(ho);
-            GetCoins(ho);
-        }
+            if (hit.gameObject.tag == "Hittable")
+            {
+                print("Ok");
+                hit.gameObject.tag = "Hitted";
+                Rigidbody obj_rb = hit.gameObject.GetComponent<Rigidbody>();
+                HittableObject ho = hit.gameObject.GetComponent<HittableObject>();
+                HitEffect(hit, obj_rb);
+                Score3DEffect(ho);
+                GetCoins(ho);
+            }
+        }  
     }
 
     private void Score3DEffect(HittableObject ho)
@@ -48,5 +53,27 @@ public class CatHitter : MonoBehaviour
     {
         int actualCoins = PlayerPrefs.GetInt("nbCoins", 0);
         PlayerPrefs.SetInt("nbCoins", actualCoins + ho.coins);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(isAI && gm.gameStarted)
+        {
+            if(other.gameObject.tag == "Hittable")
+            {
+                Rigidbody obj_rb = other.gameObject.GetComponent<Rigidbody>();
+                HittableObject ho = other.gameObject.GetComponent<HittableObject>();
+                obj_rb.isKinematic = false;
+                obj_rb.AddExplosionForce(explosionForce, transform.position + Vector3.down, explosionRadius);
+                Instantiate(hitParticles[Random.Range(0, hitParticles.Length)], other.transform.position, Quaternion.identity);
+
+                if(other.gameObject.name != "touched")
+                {
+                    //TODO
+                }
+
+                other.gameObject.name = "touched";
+            }
+        }
     }
 }
