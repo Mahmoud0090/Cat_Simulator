@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI textScoreFinal;
     public TextMeshProUGUI bestScore;
     public AIPlayer[] aIPlayers;
+    public TextMeshProUGUI[] finalScoresText;
+    public string[] finalScores;
 
     private void Awake()
     {
@@ -55,6 +57,15 @@ public class GameManager : MonoBehaviour
             CancelInvoke();
             screenEnd.SetActive(true);
             textScoreFinal.text = "Score: " + textScore.text;
+
+            finalScores[0] = "Player 1 : " + textScore.text;
+            finalScores[1] = aIPlayers[0].gameObject.name + " : " + aIPlayers[0].score;
+            finalScores[2] = aIPlayers[1].gameObject.name + " : " + aIPlayers[1].score;
+
+            for (int i = 0; i <= 2; i++)
+            {
+                finalScoresText[i].text = finalScores[i];
+            }
         } 
     }
 
