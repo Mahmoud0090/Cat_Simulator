@@ -10,7 +10,12 @@ public class AIPlayer : MonoBehaviour
     public Animator catAnim;
     public int score = 0;
     public GameManager gm;
+    public Texture[] skins;
 
+    public void Start()
+    {
+       transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = skins[Random.Range(0, skins.Length)];
+    }
 
     public void StartGame()
     {
@@ -43,5 +48,10 @@ public class AIPlayer : MonoBehaviour
         {
             ChangeDestination();
         }
+    }
+
+    public void GetPoints(int scoreToAdd)
+    {
+        score += scoreToAdd;
     }
 }

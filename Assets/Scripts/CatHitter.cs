@@ -57,7 +57,7 @@ public class CatHitter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(isAI && gm.gameStarted)
+        if(isAI && gm.gameStarted && !gm.gameEnded)
         {
             if(other.gameObject.tag == "Hittable")
             {
@@ -69,7 +69,8 @@ public class CatHitter : MonoBehaviour
 
                 if(other.gameObject.name != "touched")
                 {
-                    //TODO
+                    AIPlayer AiPlayer = GetComponent<AIPlayer>();
+                    AiPlayer.GetPoints(ho.points);
                 }
 
                 other.gameObject.name = "touched";
